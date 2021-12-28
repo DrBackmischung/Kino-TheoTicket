@@ -1,6 +1,5 @@
 package de.wi2020sebgroup1.cinemachatbot.rest;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -16,25 +15,25 @@ public class SelectedCallController {
 	
 	String baseURL = "https://wi2020seb-cinema-api.azurewebsites.net/";
 	
-	@Autowired
-	CallRepository repo;
-	
 	@GetMapping("/movies")
 	public ResponseEntity<Object> getMovies(){
-		String uri = "movies/getAll";
+		String uri = baseURL+"movie/getAll";
 		RestTemplate t = new RestTemplate();
-	    String result = t.getForObject(uri, String.class);
+	    Object result = t.getForObject(uri, Object.class);
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 	
 	@GetMapping("/shows")
 	public ResponseEntity<Object> getShows(){
-		return new ResponseEntity<>("Bye!", HttpStatus.OK);
+		String uri = baseURL+"show/getAll";
+		RestTemplate t = new RestTemplate();
+	    Object result = t.getForObject(uri, Object.class);
+		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 	
-	@GetMapping("/tickets")
+	@GetMapping("/tickets/{userID}")
 	public ResponseEntity<Object> getTickets(){
-		return new ResponseEntity<>("Bye!", HttpStatus.OK);
+		return new ResponseEntity<>("Not yet implemented", HttpStatus.NOT_IMPLEMENTED);
 	}
 
 }
