@@ -26,9 +26,7 @@ public class QueryController {
 		
 		query = query.replace("_", " ");
 		
-		if(QueryValidator.isNumeric(query)) {
-			return new ResponseEntity<>("Es tut mir leid, aber ich kann dein Anliegen nicht verstehen :(", HttpStatus.OK);
-		} else if(QueryValidator.isDate(query)) {
+		if(QueryValidator.isDate(query)) {
 			
 			//To Do: change to show/{date}
 			String uri = baseURL+"show/getAll";
@@ -59,12 +57,12 @@ public class QueryController {
 		    Object result = t.getForObject(uri, Object.class);
 			return new ResponseEntity<>(result, HttpStatus.OK);
 			
+		} else if(query == "187") {
+			return new ResponseEntity<>("187! ~ Zitat Jan C. Stengert, 29.12.2021, Bad Zwischenahn", HttpStatus.OK);
 		} else {
 			
 			String uri = baseURL+"movie/getAll";
 			RestTemplate t = new RestTemplate();
-		    @SuppressWarnings("unchecked")
-//			Movie[] response = t.getForObject(uri, Movie[].class);
 		    ResponseEntity<Movie[]> responseEntity =
 		    		  t.getForEntity(
 		    		  uri,
