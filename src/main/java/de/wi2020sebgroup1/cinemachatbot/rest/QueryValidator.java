@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import org.apache.commons.validator.GenericValidator;
 
+import de.wi2020sebgroup1.cinemachatbot.entity.Month;
+
 public class QueryValidator {
 	
 	public static ArrayList<Month> months = new ArrayList<>();

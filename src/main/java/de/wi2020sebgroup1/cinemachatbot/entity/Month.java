@@ -1,4 +1,4 @@
-package de.wi2020sebgroup1.cinemachatbot.rest;
+package de.wi2020sebgroup1.cinemachatbot.entity;
 
 public class Month {
 	

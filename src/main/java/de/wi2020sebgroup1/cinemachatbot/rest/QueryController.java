@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import de.wi2020sebgroup1.cinemachatbot.entity.Movie;
+import de.wi2020sebgroup1.cinemachatbot.entity.Response;
+import de.wi2020sebgroup1.cinemachatbot.enumeration.ResponseType;
 
 @Controller
 @RestController
@@ -26,8 +28,10 @@ public class QueryController {
 	public ResponseEntity<Object> getQueryResponse(@PathVariable String query){
 		
 		List<Movie> movies = getMoviesForQuery(query);
-	    if(movies.size() > 0)
-	    	return new ResponseEntity<>(movies, HttpStatus.OK);
+		if(movies.size() == 1)
+			return new ResponseEntity<Object>(new Response(ResponseType.MOVIE, movies.get(0)), HttpStatus.OK);
+		else if(movies.size() > 0)
+			return new ResponseEntity<Object>(new Response(ResponseType.MOVIELIST, movies), HttpStatus.OK);
 	    else {
 			
 			if(QueryValidator.isDate(query)) {
@@ -36,33 +40,30 @@ public class QueryController {
 				String uri = baseURL+"show/getAll";
 				RestTemplate t = new RestTemplate();
 			    Object result = t.getForObject(uri, Object.class);
-				return new ResponseEntity<>(result, HttpStatus.OK);
+				return new ResponseEntity<Object>(new Response(ResponseType.SHOWLIST, result), HttpStatus.OK);
 				
 			} else if(QueryValidator.isEmail(query)) {
-				return new ResponseEntity<>("Um deine Email zu ändern, bearbeite deine Profildaten in den Einstellungen!", HttpStatus.OK);
+				return new ResponseEntity<>(new Response(ResponseType.LINK, "localhost:8080"), HttpStatus.OK);
 			} else if(QueryValidator.contains(query, "show", "shows", "vorstellung", "vorstellungen")) {
 
 				String uri = baseURL+"show/getAll";
 				RestTemplate t = new RestTemplate();
 			    Object result = t.getForObject(uri, Object.class);
-				return new ResponseEntity<>(result, HttpStatus.OK);
+				return new ResponseEntity<Object>(result, HttpStatus.OK);
+				
+			} else if(QueryValidator.contains(query, "profil", "profile")) {
+
+				return new ResponseEntity<Object>(new Response(ResponseType.LINK, "localhost:8080"), HttpStatus.OK);
 				
 			} else if(QueryValidator.contains(query, "movie", "movies", "film", "filme")) {
 
 				String uri = baseURL+"movie/getAll";
 				RestTemplate t = new RestTemplate();
 			    Object result = t.getForObject(uri, Object.class);
-				return new ResponseEntity<>(result, HttpStatus.OK);
-				
-			} else if(QueryValidator.contains(query, "room", "rooms", "saal", "säle", "raum", "räume")) {
-
-				String uri = baseURL+"cinemaRoom/getAll";
-				RestTemplate t = new RestTemplate();
-			    Object result = t.getForObject(uri, Object.class);
-				return new ResponseEntity<>(result, HttpStatus.OK);
+				return new ResponseEntity<Object>(new Response(ResponseType.MOVIELIST, result), HttpStatus.OK);
 				
 			} else if(query == "187") {
-				return new ResponseEntity<>("187! ~ Zitat Jan C. Stengert, 29.12.2021, Bad Zwischenahn", HttpStatus.OK);
+				return new ResponseEntity<Object>(new Response(ResponseType.STRING, "187! ~ Zitat Jan C. Stengert, 29.12.2021, Bad Zwischenahn"), HttpStatus.OK);
 			} else {
 				
 				String uri = baseURL+"movie/getAll";
@@ -85,9 +86,11 @@ public class QueryController {
 			    		continue;
 			    	}
 			    }
-			    if(result.size() > 0)
-			    	return new ResponseEntity<>(result, HttpStatus.OK);
-				return new ResponseEntity<>("Ich konnte deine Anfrage leider nicht verstehen :(", HttpStatus.OK);
+				if(movies.size() == 1)
+					return new ResponseEntity<Object>(new Response(ResponseType.MOVIE, movies.get(0)), HttpStatus.OK);
+				else if(result.size() > 0)
+					return new ResponseEntity<Object>(new Response(ResponseType.MOVIELIST, movies), HttpStatus.OK);
+				return new ResponseEntity<>(new Response(ResponseType.STRING, "Ich konnte deine Anfrage leider nicht verstehen :("), HttpStatus.OK);
 				
 			}
 	    }
