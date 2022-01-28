@@ -5,7 +5,7 @@ import java.util.UUID;
 public class Movie {
 	
 	private UUID id;
-	private String titel;
+	private String title;
 	private String language;
 	private double duration;
 	private String director;
@@ -15,11 +15,11 @@ public class Movie {
 	
 	public Movie() {}
 	
-	public Movie(UUID id, String titel, String language, double duration, String director, String description,
+	public Movie(UUID id, String title, String language, double duration, String director, String description,
 			String pictureLink, int fSK) {
 		super();
 		this.id = id;
-		this.titel = titel;
+		this.title = title;
 		this.language = language;
 		this.duration = duration;
 		this.director = director;
@@ -36,12 +36,12 @@ public class Movie {
 		this.id = id;
 	}
 
-	public String getTitel() {
-		return titel;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setTitel(String titel) {
-		this.titel = titel;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 	public String getLanguage() {
