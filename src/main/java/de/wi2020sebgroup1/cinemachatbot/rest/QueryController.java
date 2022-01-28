@@ -72,13 +72,13 @@ public class QueryController {
 			    Movie[] response = responseEntity.getBody();
 			    List<Movie> result = new ArrayList<>();
 			    for(Movie m : response) {
-			    	if(QueryValidator.similarity(m.getTitel(), query) > 0.7 && !result.contains(m)) {
+			    	if(QueryValidator.similarity(m.getTitle(), query) > 0.7 && !result.contains(m)) {
 			    		result.add(m);
 			    		continue;
 			    	} else if(QueryValidator.similarity(m.getDirector(), query) > 0.7 && !result.contains(m)) {
 			    		result.add(m);
 			    		continue;
-			    	} else if(QueryValidator.somewhereRoughlyContains(query, m.getTitel()) && !result.contains(m)) {
+			    	} else if(QueryValidator.somewhereRoughlyContains(query, m.getTitle()) && !result.contains(m)) {
 			    		result.add(m);
 			    		continue;
 			    	} else if(QueryValidator.somewhereRoughlyContains(query, m.getDirector()) && !result.contains(m)) {
@@ -110,7 +110,7 @@ public class QueryController {
 	    Movie[] response = responseEntity.getBody();
 	    List<Movie> result = new ArrayList<>();
 	    for(Movie m : response) {
-	    	if(m.getTitel().equalsIgnoreCase(query) && !result.contains(m))
+	    	if(m.getTitle().equalsIgnoreCase(query) && !result.contains(m))
 	    		result.add(m);
 	    	if(m.getDirector().equalsIgnoreCase(query) && !result.contains(m))
 	    		result.add(m);
