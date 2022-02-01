@@ -21,8 +21,8 @@ import de.wi2020sebgroup1.cinemachatbot.enumeration.ResponseType;
 @RequestMapping("/query")
 public class QueryController {
 
-//	String baseURL = "https://wi2020seb-cinema-api.azurewebsites.net/";
-	String baseURL = "https://wi2020seb-cinema-api-dev.azurewebsites.net/";
+	String baseURL = "https://wi2020seb-cinema-api.azurewebsites.net/";
+//	String baseURL = "https://wi2020seb-cinema-api-dev.azurewebsites.net/";
 	
 	@GetMapping("/{query}")
 	public ResponseEntity<Object> getQueryResponse(@PathVariable String query){
@@ -30,8 +30,6 @@ public class QueryController {
 		List<Movie> movies = getMoviesForQuery(query);
 		if(movies.size() == 1)
 			return new ResponseEntity<Object>(new Response(ResponseType.MOVIE, movies.get(0)), HttpStatus.OK);
-		else if(movies.size() > 0)
-			return new ResponseEntity<Object>(new Response(ResponseType.MOVIELIST, movies), HttpStatus.OK);
 	    else {
 			
 			if(QueryValidator.isDate(query)) {
@@ -49,7 +47,7 @@ public class QueryController {
 				String uri = baseURL+"show/getAll";
 				RestTemplate t = new RestTemplate();
 			    Object result = t.getForObject(uri, Object.class);
-				return new ResponseEntity<Object>(result, HttpStatus.OK);
+				return new ResponseEntity<Object>(new Response(ResponseType.SHOWLIST, result), HttpStatus.OK);
 				
 			} else if(QueryValidator.contains(query, "profil", "profile")) {
 
@@ -86,10 +84,10 @@ public class QueryController {
 			    		continue;
 			    	}
 			    }
-				if(movies.size() == 1)
-					return new ResponseEntity<Object>(new Response(ResponseType.MOVIE, movies.get(0)), HttpStatus.OK);
+				if(result.size() == 1)
+					return new ResponseEntity<Object>(new Response(ResponseType.MOVIE, result.get(0)), HttpStatus.OK);
 				else if(result.size() > 0)
-					return new ResponseEntity<Object>(new Response(ResponseType.MOVIELIST, movies), HttpStatus.OK);
+					return new ResponseEntity<Object>(new Response(ResponseType.MOVIELIST, result), HttpStatus.OK);
 				return new ResponseEntity<>(new Response(ResponseType.STRING, "Ich konnte deine Anfrage leider nicht verstehen :("), HttpStatus.OK);
 				
 			}
