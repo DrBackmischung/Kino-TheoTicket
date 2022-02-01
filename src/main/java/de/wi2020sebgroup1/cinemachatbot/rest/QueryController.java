@@ -21,8 +21,8 @@ import de.wi2020sebgroup1.cinemachatbot.enumeration.ResponseType;
 @RequestMapping("/query")
 public class QueryController {
 
-	String baseURL = "https://wi2020seb-cinema-api.azurewebsites.net/";
-//	String baseURL = "https://wi2020seb-cinema-api-dev.azurewebsites.net/";
+//	String baseURL = "https://wi2020seb-cinema-api.azurewebsites.net/";
+	String baseURL = "https://wi2020seb-cinema-api-dev.azurewebsites.net/";
 	
 	@GetMapping("/{query}")
 	public ResponseEntity<Object> getQueryResponse(@PathVariable String query){
@@ -73,10 +73,16 @@ public class QueryController {
 			    	if(QueryValidator.similarity(m.getTitle(), query) > 0.7 && !result.contains(m)) {
 			    		result.add(m);
 			    		continue;
+			    	} else if(QueryValidator.similarity(m.getOriginalTitle(), query) > 0.7 && !result.contains(m)) {
+			    		result.add(m);
+			    		continue;
 			    	} else if(QueryValidator.similarity(m.getDirector(), query) > 0.7 && !result.contains(m)) {
 			    		result.add(m);
 			    		continue;
 			    	} else if(QueryValidator.somewhereRoughlyContains(query, m.getTitle()) && !result.contains(m)) {
+			    		result.add(m);
+			    		continue;
+			    	} else if(QueryValidator.somewhereRoughlyContains(query, m.getOriginalTitle()) && !result.contains(m)) {
 			    		result.add(m);
 			    		continue;
 			    	} else if(QueryValidator.somewhereRoughlyContains(query, m.getDirector()) && !result.contains(m)) {
@@ -109,6 +115,8 @@ public class QueryController {
 	    List<Movie> result = new ArrayList<>();
 	    for(Movie m : response) {
 	    	if(m.getTitle().equalsIgnoreCase(query) && !result.contains(m))
+	    		result.add(m);
+	    	if(m.getOriginalTitle().equalsIgnoreCase(query) && !result.contains(m))
 	    		result.add(m);
 	    	if(m.getDirector().equalsIgnoreCase(query) && !result.contains(m))
 	    		result.add(m);
