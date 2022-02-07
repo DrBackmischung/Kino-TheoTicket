@@ -22,7 +22,7 @@ import de.wi2020sebgroup1.cinemachatbot.enumeration.ResponseType;
 public class QueryController {
 
 //	String baseURL = "https://wi2020seb-cinema-api.azurewebsites.net/";
-	String baseURL = "https://wi2020seb-cinema-api-dev.azurewebsites.net/";
+	String baseURL = "https://kinovation.azurewebsites.net/";
 	
 	@GetMapping("/{query}")
 	public ResponseEntity<Object> getQueryResponse(@PathVariable String query){
@@ -41,7 +41,7 @@ public class QueryController {
 				return new ResponseEntity<Object>(new Response(ResponseType.SHOWLIST, result), HttpStatus.OK);
 				
 			} else if(QueryValidator.isEmail(query)) {
-				return new ResponseEntity<>(new Response(ResponseType.LINK, "localhost:8080"), HttpStatus.OK);
+				return new ResponseEntity<>(new Response(ResponseType.LINK, "https://kino-frontend.vercel.app/profil"), HttpStatus.OK);
 			} else if(QueryValidator.contains(query, "show", "shows", "vorstellung", "vorstellungen")) {
 
 				String uri = baseURL+"show/getAll";
@@ -51,7 +51,19 @@ public class QueryController {
 				
 			} else if(QueryValidator.contains(query, "profil", "profile")) {
 
-				return new ResponseEntity<Object>(new Response(ResponseType.LINK, "localhost:8080"), HttpStatus.OK);
+				return new ResponseEntity<Object>(new Response(ResponseType.LINK, "https://kino-frontend.vercel.app/profil"), HttpStatus.OK);
+				
+			} else if(QueryValidator.contains(query, "login", "einloggen")) {
+
+				return new ResponseEntity<Object>(new Response(ResponseType.LINK, "https://kino-frontend.vercel.app/login"), HttpStatus.OK);
+				
+			} else if(QueryValidator.contains(query, "register", "registrieren", "new user", "neuen account")) {
+
+				return new ResponseEntity<Object>(new Response(ResponseType.LINK, "https://kino-frontend.vercel.app/registrierung"), HttpStatus.OK);
+				
+			} else if(QueryValidator.contains(query, "support", "manager")) {
+
+				return new ResponseEntity<Object>(new Response(ResponseType.STRING, "Support: 01749885992"), HttpStatus.OK);
 				
 			} else if(QueryValidator.contains(query, "movie", "movies", "film", "filme")) {
 
